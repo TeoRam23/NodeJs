@@ -4,15 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ÆÆÆÆÆ</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>ÆÆÆ</h1>
-    <p id="text_field">æææ</p>
-    <p id="tasks_p"></p>
+<div id="contentHA">
 
-    <input id="task" type="text" placeholder="Æ">
-    <button id="btn" onclick="ask()">Knappknapp</button>
-    <button id="task_btn" onclick="load_tasks()">PLIS GI MEG NOEN TASKS JEG VIL IKKE VÆRE SUSSY IMPORTER!</button>
+
+    <h1>ChætChæt</h1>
+    <p id="text_field">chæt</p>
+
+    <div id="chatting">
+        <div id="chatbox"></div>
+        <div id="chatinput">
+            <input id="taskbox" type="text" placeholder="Æ">
+            <button id="btn" onclick="ask()">Knappknapp</button>
+        </div>
+    </div>
+    
+    <input id="brukerbox" type="text" placeholder="Brukernavn">
+    <button onclick="start_log_in()">log inn test</button>
+
+    <ul id="tasks_ul"></ul>
     <script src="client.js"></script>
+
+
+</div>
 </body>
 </html>
