@@ -1,8 +1,18 @@
 var express = require('express');
+const sessions = require('express-session')
 var path = require('path');
 
 var app = express();
 const PORT = 80
+const oneHour = 1000 * 60 * 60
+
+var session;
+
+var users = [
+    {username: "magne", password: "123"},
+    {username: "importer", password: "sussy"},
+    {username: "croodmate", password: "baka"}
+]
 
 var tasks = [
     {bruker: "bruker", task: "æææ"}, 
@@ -12,26 +22,75 @@ var tasks = [
     {bruker: "bruker", task: "skanning"}, 
     {bruker: "bruker", task: "task 1"}
 ]
-var users = [
-    {brukernavn: "magne", password: "123"}
-]
 
 
-users.username
 
 app.use(express.static('public')) // public mappe til app
 app.use(express.json()) // json funksjon for app
 
-app.get('/', function (req, res) {
+app.use(sessions({
+        secret: "amogusimporter",
+        saveUninitialized: true,
+        cookie: {
+            maxAge: oneHour
+        },
+        resave: false
+    }))
+
+app.get('/chet', function (req, res) {
+    session = req.session;
+    if (session.username) {
+        console.log("yo get logged!")
+    } else {
+        console.log("get unlogged bro")
+    }
+    console.log(session.username)
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 });
+
+app.post('/login_check', (req, res) => {
+    session = req.session;
+    if (session.username) {
+        res.json({ success: true }) 
+    } else {
+        res.json({ success: false }) 
+    }
+})
+
+app.post('/login', (req, res) => {
+    session = req.session;
+
+    console.log("login attempt:")
+    console.log(req.body.username)
+    console.log(req.body.password)
+
+    // finner bruker med det navnet
+    var user = users.find(u => u.username === req.body.username)
+
+    if (user && user.password == req.body.password){
+        console.log("yo flott")
+        session.username = user.username
+        console.log(session.username)
+        res.json({ 
+            message: "logged inn",
+            success: true
+        })
+    }
+        //session.username = bruker fra client!
+
+        // senere bruke
+        //req.session.username
+})
 
 app.get('/sus', function (req, res) {
     res.send("OI, HEI! >:[ ...amogus")
 });
 
 app.get('/load_tasks', function (req, res) {
-    res.json({ tasks: tasks }) 
+    session = req.session
+    if (session.username) {
+        res.json({ tasks: tasks }) 
+    }
 });
 
 app.delete('/delete/:index', (req, res) => {
@@ -47,7 +106,7 @@ app.delete('/delete/:index', (req, res) => {
  
 app.post('/ask', (req, res) => {
     var task = req.body.task
-    var bruker = req.body.bruker
+    var bruker = req.session.username
     console.log(task)
     console.log(bruker)
     if (task && bruker){

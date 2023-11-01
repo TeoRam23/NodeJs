@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', load_tasks());
+document.addEventListener('DOMContentLoaded', login_check());
 
-function start_log_in(){
+/*function start_log_in(){
     const EL_chatting_div = document.getElementById('chatting');
     EL_chatting_div.innerHTML = ""
 
@@ -17,6 +17,7 @@ function start_log_in(){
 
     var login_button = document.createElement("button");
     login_button.textContent = "Logg inn"
+    login_button.id = "idæææ"
     login_button.onclick = "log_in()"; //ÆÆÆÆÆÆ HÆÆÆÆ??
 
     login_div.appendChild(brukerbox);
@@ -26,6 +27,58 @@ function start_log_in(){
 
 function log_in(){
     console.log("jeg lever? JEG LEVER!")
+} */
+
+function login_check(){
+    const login_div = document.getElementById('login_div')
+    const chat_div = document.getElementById('chatting')
+    fetch('/login_check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            hoho: "hoho"
+        })
+    })
+        .then(res => res.json())
+        .then(data =>{
+            if (data.success) {
+                login_div.style.display = "none"
+                chat_div.style.display = "flex"
+                load_tasks()
+            } else {
+                login_div.style.display = "flex"
+                chat_div.style.display = "none"
+            }
+        })
+}
+
+
+function attempt_log_in(){
+    const brukerinput = document.getElementById('brukerbox').value
+    const passordinput = document.getElementById('passordbox').value
+    const login_div = document.getElementById('login_div')
+    const chat_div = document.getElementById('chatting')
+
+    console.log(brukerinput + passordinput)
+
+    fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            username: brukerinput,
+            password: passordinput,
+            login_div: login_div
+        })
+    })
+        .then(res => res.json())
+        .then(data =>{
+            console.log(data.message)
+            if (data.success) {
+                login_div.style.display = "none"
+                chat_div.style.display = "flex"
+                load_tasks()
+            }
+        })
 }
 
 function ask(){
@@ -44,7 +97,6 @@ function ask(){
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({
             task: input_value,
-            bruker: EL_brukerbox
         }) // sender Jason objekt
     })
         .then(res => res.json())
@@ -52,7 +104,6 @@ function ask(){
             if (data.success) {
                 console.log("Task goog");
             } else {
-                // må endres til å legge til task
                 console.log("Task badd");
             }
             text_field.innerHTML = data.message ;
@@ -63,7 +114,6 @@ function ask(){
 
 function load_tasks() {
     var EL_chatbox = document.getElementById('chatbox');
-    var EL_brukerbox = document.getElementById('brukerbox').value;
     fetch('/load_tasks')
         .then(res => res.json())
         .then(data => {
@@ -74,7 +124,7 @@ function load_tasks() {
 
 
                 var p = document.createElement("p");
-                p.innerHTML = bruker + ": " + task;
+                p.innerHTML = bruker + ": " + task + " ";
                 EL_chatbox.appendChild(p);
 
                 var btn = document.createElement('button')
@@ -104,9 +154,4 @@ function deleteTask(index){
             alert("HVA HAR DU GJORT??? HVORFOR KAN IKKE JEG SLETTE??? DIN IDIOT!!!")
         }
     })
-}
-
-
-function setbruker(){
-    var EL_brukerbox = document.getElementById('brukerbox')
 }

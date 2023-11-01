@@ -9,27 +9,51 @@ body {
     flex-direction: column;
 }
 
-#chatting {
+#big_box {
     background-color: rgb(100, 89, 61);
     border-style: solid;
     border-width: 2px;
     border-color: rgb(133, 128, 97);
-    height: 600px;
-    width: 70%;
 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
+
+    height: 600px;
+    width: 70%;
+
+
     
 }
 
+#chatting {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+}
+
 #chatbox {
-    height: 95%;
+    align-self: center;
     width: 95%;
+}
+
+#taskbox {
+    
+}
+
+#btn {
+    width: fit-content;
 }
 
 #delete_button {
     background-color: rgb(255, 0, 140);
     border-style: none;
+}
+
+#login_div {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
 }
