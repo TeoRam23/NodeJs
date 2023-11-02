@@ -11,7 +11,8 @@ var session;
 var users = [
     {username: "magne", password: "123"},
     {username: "importer", password: "sussy"},
-    {username: "croodmate", password: "baka"}
+    {username: "croodmate", password: "baka"},
+    {username: "bruker", password: "Passord1"}
 ]
 
 var tasks = [
@@ -89,7 +90,10 @@ app.get('/sus', function (req, res) {
 app.get('/load_tasks', function (req, res) {
     session = req.session
     if (session.username) {
-        res.json({ tasks: tasks }) 
+        res.json({ 
+            tasks: tasks,
+            username: session.username
+        }) 
     }
 });
 

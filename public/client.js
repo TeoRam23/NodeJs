@@ -81,6 +81,7 @@ function attempt_log_in(){
         })
 }
 
+
 function ask(){
     console.log("ÆÆÆ JEG BLE TATT PÅ");
     const text_field = document.getElementById('text_field');
@@ -118,6 +119,7 @@ function load_tasks() {
         .then(res => res.json())
         .then(data => {
             EL_chatbox.innerHTML = "";
+            var currentuser = data.username
             data.tasks.forEach((item, index) => {
                 var bruker = item.bruker
                 var task = item.task
@@ -126,14 +128,17 @@ function load_tasks() {
                 var p = document.createElement("p");
                 p.innerHTML = bruker + ": " + task + " ";
                 EL_chatbox.appendChild(p);
-
-                var btn = document.createElement('button')
-                btn.textContent = "SUSSY ,':{"
-                btn.id = "delete_button"
-                btn.onclick = function() {
-                    deleteTask(index)
+                
+                if (bruker == currentuser) {
+                    var btn = document.createElement('button')
+                    btn.textContent = "SUSSY ,':{"
+                    btn.id = "delete_button"
+                    btn.onclick = function() {
+                        deleteTask(index)
+                    }
+                    p.appendChild(btn)
                 }
-                p.appendChild(btn)
+                
                 EL_chatbox.appendChild(p)
             });
             console.log(data.tasks);
