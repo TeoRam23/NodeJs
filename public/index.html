@@ -11,7 +11,6 @@
 
 
     <h1>ChætChæt</h1>
-    <p id="text_field">chæt</p>
     <div id="big_box">
         <div id="chatting">
             <div id="chatbox"></div>
@@ -21,22 +20,22 @@
             </div>
         </div>
         <div id="login_div">
-
-            <h1>LOG INN!!!</h1>
-                <label for="brukerbox">Brukernavn</label>
-                <input type="text" name="brukernavn" id="brukerbox">
-
-                <label for="passordbox">Passord</label>
-                <input type="text" name="password" id="passordbox">
             
-                <button onclick="attempt_log_in()">logg inn</button>
+            <h1>LOG INN!!!</h1>
+            <label for="brukerbox">Brukernavn</label>
+            <input type="text" name="brukernavn" id="brukerbox">
+            
+            <label for="passordbox">Passord</label>
+            <input type="password" name="password" id="passordbox">
+            
+            <button onclick="attempt_log_in()">Logg inn</button>
         </div>
     </div>
-    <button onclick="log_out()">logg inn</button>
 
-
-    <ul id="tasks_ul"></ul>
-    <script src="client.js"></script>
+    <button id="loggut_btn" onclick="log_out()">Logg ut :[</button>
+        
+        <ul id="tasks_ul"></ul>
+        <script src="client.js"></script>
 
 
 </div>

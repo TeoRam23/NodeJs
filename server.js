@@ -1,6 +1,7 @@
 var express = require('express');
 const sessions = require('express-session')
 var path = require('path');
+var fs = require("fs");
 
 var app = express();
 const PORT = 80
@@ -8,12 +9,20 @@ const oneHour = 1000 * 60 * 60
 
 var session;
 
-var users = [
+/*var users = [
     {username: "magne", password: "123"},
     {username: "importer", password: "sussy"},
     {username: "croodmate", password: "baka"},
     {username: "bruker", password: "Passord1"}
-]
+]*/
+
+// HALLO FREMTIDSMEG! dettte er det jeg holdt på med forrige gang, og det virker ikke¨
+//HALLO FREMTIDSMEG!
+fs.readFile("users.txt", function(err, buf) { 
+    if (err) { console.log(err) }
+    users = [buf.toString()]
+    console.log(users);
+});
 
 var tasks = [
     {bruker: "bruker", task: "æææ"}, 
@@ -83,6 +92,14 @@ app.post('/login', (req, res) => {
         //req.session.username
 })
 
+app.get('/log_out', function (req, res) {
+    session = req.session
+
+    session.destroy(null)
+    res.json({ success: true })
+})
+
+
 app.get('/sus', function (req, res) {
     res.send("OI, HEI! >:[ ...amogus")
 });
@@ -100,11 +117,11 @@ app.get('/load_tasks', function (req, res) {
 app.delete('/delete/:index', (req, res) => {
     var index = parseInt(req.params.index) // index er en params
     console.log(index)
-    if (index >= 0 && index < tasks.length) {
+    if (index >= 0 && index < tasks.length && tasks[index].bruker == req.session.username) {
         tasks.splice(index, 1) // sletter EN task fra listen
         res.json({ success: true })
     } else {
-        res.json({success: false})
+        res.json({ success: false })
     }
 })
  
@@ -117,11 +134,9 @@ app.post('/ask', (req, res) => {
         tasks.push({bruker: bruker, task: task})
 
         res.json({  success: true,
-                    message: "Scanning task finished. I trust you bro!"
         })
     } else {
         res.json({  success: false,
-                    message: "Ups, ingen tasks. Ser ut til at du er en sussy importer! >:]"
         })
     }
 });

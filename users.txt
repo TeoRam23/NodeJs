@@ -1,0 +1,4 @@
+{username: "magne", password: "123"},
+{username: "importer", password: "sussy"},
+{username: "croodmate", password: "baka"},
+{username: "bruker", password: "Passord1"}
