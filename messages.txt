@@ -1,0 +1,1 @@
+[{"bruker":"bruker","task":"æææ"},{"bruker":"bruker","task":"ÆÆÆ"},{"bruker":"bruker","task":"aaa"},{"bruker":"bruker","task":"AAA"},{"bruker":"bruker","task":"skanning"},{"bruker":"bruker","task":"task 1"}]
