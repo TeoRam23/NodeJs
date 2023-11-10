@@ -99,6 +99,20 @@ function log_out(){
         });
 }
 
+function registrer(){
+    const brukerinput = document.getElementById('brukerbox').value
+    const passordinput = document.getElementById('passordbox').value
+    fetch('/registrer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            username: brukerinput,
+            password: passordinput
+        })
+    })
+
+}
+
 
 function ask(){
     console.log("ÆÆÆ JEG BLE TATT PÅ");
@@ -134,6 +148,7 @@ function load_tasks() {
     fetch('/load_tasks')
         .then(res => res.json())
         .then(data => {
+            console.log("DETTE BURDE FUNGERE ÆÆÆ")
             EL_chatbox.innerHTML = "";
             var currentuser = data.username
             data.tasks.forEach((item, index) => {

@@ -16,19 +16,22 @@
             <div id="chatbox"></div>
             <div id="chatinput">
                 <input id="taskbox" type="text" placeholder="Æ">
-                <button id="btn" onclick="ask()">Knappknapp</button>
+                <button id="btn" onclick="ask()">Send</button>
             </div>
         </div>
         <div id="login_div">
             
-            <h1>LOG INN!!!</h1>
+            <h1 id="login_text">LOG INN!!!</h1>
             <label for="brukerbox">Brukernavn</label>
             <input type="text" name="brukernavn" id="brukerbox">
             
             <label for="passordbox">Passord</label>
             <input type="password" name="password" id="passordbox">
             
-            <button onclick="attempt_log_in()">Logg inn</button>
+            <div id="buttons_div">
+            <button onclick="attempt_log_in() "class="login_buttons">Logg inn</button>
+            <button onclick="registrer() "class="login_buttons">Registrer deg</button>
+            </div>
         </div>
     </div>
 

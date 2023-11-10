@@ -31,12 +31,27 @@ fs.readFile("users.txt", function(err, buf) {
 
 var messages
 
+
 fs.readFile("messages.txt", function(err, buf) { 
     if (err) { console.log(err) }
     messages = JSON.parse(buf);
     console.log("h")
 });
 
+
+async function write_messages() {
+    fs.writeFile("messages.txt", JSON.stringify(messages), (err, result) => {
+    if (err) {
+        return console.error(err);
+    }});
+  }
+
+  async function read_messages() {
+    fs.readFile("messages.txt", function(err, buf) { 
+        if (err) { console.log(err) }
+        messages = JSON.parse(buf);
+    });
+  }
 
 
 app.use(express.static('public')) // public mappe til app
@@ -96,12 +111,29 @@ app.post('/login', (req, res) => {
         //req.session.username
 })
 
+app.post('/registrer', function (req, res) {
+    session = req.session;
+    console.log("registrering attempt:")
+    console.log(req.body.username)
+    var username = req.body.username
+    console.log(req.body.password)
+    var password = req.body.password
+
+    var user = users.find(u => u.username === req.body.username)
+    if (!user){
+        users.push({username: username, password: password})
+        console.log("yeahaha") //FREMTIDSMEG GJØR DETTE FERDIG PLS
+
+    }
+});
+
+
 app.get('/log_out', function (req, res) {
     session = req.session
 
     session.destroy(null)
     res.json({ success: true })
-})
+});
 
 
 app.get('/sus', function (req, res) {
@@ -111,6 +143,8 @@ app.get('/sus', function (req, res) {
 app.get('/load_tasks', function (req, res) {
     session = req.session
     if (session.username) {
+        read_messages()
+
         res.json({ 
             tasks: messages,
             username: session.username
@@ -121,8 +155,10 @@ app.get('/load_tasks', function (req, res) {
 app.delete('/delete/:index', (req, res) => {
     var index = parseInt(req.params.index) // index er en params
     console.log(index)
+    
     if (index >= 0 && index < messages.length && messages[index].bruker == req.session.username) {
         messages.splice(index, 1) // sletter EN task fra listen
+        write_messages()
         res.json({ success: true })
     } else {
         res.json({ success: false })
@@ -130,17 +166,19 @@ app.delete('/delete/:index', (req, res) => {
 })
  
 app.post('/ask', (req, res) => {
-    var task = req.body.task
+    var message = req.body.task
     var bruker = req.session.username
-    console.log(task)
+    console.log(message)
     console.log(bruker)
-    if (task && bruker){
-        fs.readFile("messages.txt", (err, data) => {
+    if (message && bruker){
+        messages.push({bruker: bruker, task: message});
+        write_messages()
+        /*fs.readFile("messages.txt", (err, data) => {
             if (err) { return console.error(err); };
-
+            
             var data = JSON.parse(data.toString());
-            data.bruker = bruker;
-            data.task = task;
+            data.push({bruker: bruker, task:task});
+            console.log(data)
             fs.writeFile("messages.txt", JSON.stringify(data), (err, result) => { //HALLO FREMTIDSmEG! HÆÆÆÆæÆÆæææææÆ https://stackoverflow.com/questions/48739630/append-text-to-existing-json-file-node-js
             if (err) {
                 return console.error(err);
@@ -148,7 +186,7 @@ app.post('/ask', (req, res) => {
                 console.log(result);
                 console.log("yayÆÆÆÆ")
             }});
-        });
+        });*/
         //messages.push({bruker: bruker, task: task})
 
         res.json({  success: true,
